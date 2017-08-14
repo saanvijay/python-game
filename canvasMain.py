@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 
 import sys
 from canvas import *
+from timerThread import timerGui
 
 if __name__ == '__main__':
 	application = QApplication(sys.argv)

@@ -10,7 +10,7 @@ class gameCanvas(QWidget):
 		canvasLayout = QFormLayout()
 		self.setLayout(canvasLayout)
 		self.center()
-		self.count = 5
+		self.count = 2
 		self.current_count = 0
 		self.timer = QTimer()
 		self.timer.start(1000)
@@ -18,9 +18,11 @@ class gameCanvas(QWidget):
 
 	def countMethod(self):
 		self.current_count +=1
-		print self.current_count
 		if self.current_count == self.count:
 			self.timer.stop()
+			self.current_count = 0
+			self.update()
+			self.timer.start(1000)
 		
 
 	def mousePressEvent(self, QMouseEvent):
@@ -41,12 +43,11 @@ class gameCanvas(QWidget):
 			xPos = randint(0,750)
 			yPos = randint(0,550)
 			painter.drawEllipse(xPos,yPos, 50, 50)
-			#painter.drawRect(xPos,yPos, 50, 50)
 			txPos = xPos + 15
 			tyPos = yPos + 30
 			painter.setPen(QPen(QColor(0,0,0)))
-			painter.drawText(int(txPos), int(tyPos), str(randint(0,255)))
-			self.update()
+			scoreCard = randint(0,255)
+			painter.drawText(int(txPos), int(tyPos), str(scoreCard))
 		#painter.end()
 	def center(self):
         	screen = QDesktopWidget().screenGeometry()
