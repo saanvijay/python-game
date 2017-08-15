@@ -17,7 +17,26 @@ class gameCanvas(QWidget):
 		self.timer.start(1000)
 		self.timer.timeout.connect(self.countMethod)
 		self.ds = dict()
+		self.uscore = 0
 		self.dialog = None
+		self.scoreDialog()
+
+	def scoreDialog(self):
+		font = QFont()
+		font.setFamily('Arial')
+		font.setPointSize(15)
+		self.dialog = QDialog()
+		self.dialog.setFont(font)
+		self.dialog.move(1200,120)
+		self.dialog.resize(200,100)
+		self.dialog.setWindowTitle('Score')
+		self.dialog.layout = QFormLayout()
+		self.dialog.setLayout(self.dialog.layout)
+		txt = "your score is {}".format(self.uscore)
+		self.dialog.scoreLabel = QLabel(txt)
+		self.dialog.layout.addWidget(self.dialog.scoreLabel)
+		self.dialog.show()
+
 
 	def countMethod(self):
 		self.current_count +=1
@@ -26,24 +45,24 @@ class gameCanvas(QWidget):
 			self.current_count = 0
 			self.update()
 			self.timer.start(1000)
-			self.ds.clear()
+			self.ds = dict()
 		
 
 	def mousePressEvent(self, QMouseEvent):
 		clickPos = QMouseEvent.pos()
-		print "clickPos", QMouseEvent.x()
-		print "clickPos", QMouseEvent.y()
-		clickedRegion = QRectF(int(QMouseEvent.x()), int(QMouseEvent.y()), int(50), int(50))
-		print clickedRegion
-		#print self.ds[clickedRegion]
+		scoreCard = self.getScoreCard(QMouseEvent.x(), QMouseEvent.y())
+		print "scoreCard", scoreCard
+		self.uscore += scoreCard 
+		self.dialog.close()
+		self.scoreDialog()
+	#	self.msg = QMessageBox()
+###		txt = "your score is {}".format(self.uscore)
+##		self.msg.setText(txt)
+#		self.msg.show()
+
 
 	def mouseReleaseEvent(self, QMouseEvent):
 		cursorPos = QCursor().pos()
-		print "rclickPos", QMouseEvent.x()
-		print "rclickPos", QMouseEvent.y()
-		clickedRegion = QRectF(int(QMouseEvent.x()), int(QMouseEvent.y()), int(50), int(50))
-		#print "cursorPos", cursorPos
-		print self.getScoreCard(QMouseEvent.x(), QMouseEvent.y())
 
 	def getScoreCard(self, x, y):
 		for rect,score in self.ds.iteritems():
