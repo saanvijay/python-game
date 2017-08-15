@@ -8,3 +8,5 @@ Simple python game development using Python PyQt, REST, MongoDB
 # To run the game, type the following command
 	* python canvasMain.py
 
+# Screen shot
+![alt text]https://github.com/saanvijay/python-game/blob/master/screen-shot-game.png
