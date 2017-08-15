@@ -2,13 +2,15 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import threading 
+import sys
 
 class timerGui(QWidget):
 	def __init__(self, *args):
 		QWidget.__init__(self, *args)
 		self.seconds = 10
 		self.count = 10
-		threading.Timer(10, self.counter, self.seconds)
+		self.timer = QTimer()
+		self.timer.timeout.connect(self.counter, self.seconds)
 		self.createWidget()
 		
 	def createWidget(self):
@@ -18,7 +20,6 @@ class timerGui(QWidget):
 		reduceCountLabel = QLabel(timeRemaining)
 		counterLayout.addWidget(reduceCountLabel)
 		self.show()
-				
 
 	def counter(self):
 		self.count -= 1
@@ -26,4 +27,4 @@ class timerGui(QWidget):
 		if self.count == self.seconds:
 			sys.exit()
 		
-	
+
