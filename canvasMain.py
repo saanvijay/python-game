@@ -4,11 +4,12 @@ from PyQt4.QtCore import *
 
 import sys
 from canvas import *
+from constants import *
 
 if __name__ == '__main__':
 	application = QApplication(sys.argv)
 	canvas = gameCanvas()
-	canvas.resize(800, 600)
+	canvas.resize(GAME.CANVAS_WIDTH, GAME.CANVAS_HEIGHT)
 	canvas.setStyleSheet('background:black')
 	canvas.setWindowTitle('Python Game')
 	canvas.show()

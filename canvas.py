@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 
 import sys
 from random import randint
+from constants import *
 #from timerThread import timerGui
 
 class gameCanvas(QWidget):
@@ -18,7 +19,7 @@ class gameCanvas(QWidget):
 		self.timer.timeout.connect(self.countMethod)
 		self.ds = dict()
 		self.uscore = 0
-		self.remainingSecs = 60
+		self.remainingSecs = GAME.REMAINING_SECONDS
 		self.dialog = None
 		self.scoreDialog()
 		self.msgBox = None
@@ -26,11 +27,11 @@ class gameCanvas(QWidget):
 	def scoreDialog(self):
 		font = QFont()
 		font.setFamily('Arial')
-		font.setPointSize(15)
+		font.setPointSize(GAME.TEXT_FONT_SIZE)
 		self.dialog = QDialog()
 		self.dialog.setFont(font)
-		self.dialog.move(1200,120)
-		self.dialog.resize(200,100)
+		self.dialog.move(GAME.SCORE_DIALOG_POS_X,GAME.SCORE_DIALOG_POS_Y)
+		self.dialog.resize(GAME.SCORE_DIALOG_WIDTH, GAME.SCORE_DIALOG_HEIGHT)
 		self.dialog.setWindowTitle('Score')
 		self.dialog.setStyleSheet('background:green')
 		self.dialog.layout = QFormLayout()
@@ -52,13 +53,12 @@ class gameCanvas(QWidget):
 			self.msgBox.setText('GameOver')
 			self.msgBox.buttonClicked.connect(lambda:sys.exit())
 			self.msgBox.show()
-			#sys.exit()
 		if self.current_count == self.count:
 			self.timer.stop()
 			self.current_count = 0
+			self.ds = dict()
 			self.update()
 			self.timer.start(1000)
-			self.ds = dict()
 		
 
 	def mousePressEvent(self, QMouseEvent):
@@ -68,18 +68,13 @@ class gameCanvas(QWidget):
 		self.uscore += scoreCard 
 		self.dialog.close()
 		self.scoreDialog()
-	#	self.msg = QMessageBox()
-###		txt = "your score is {}".format(self.uscore)
-##		self.msg.setText(txt)
-#		self.msg.show()
-
 
 	def mouseReleaseEvent(self, QMouseEvent):
 		cursorPos = QCursor().pos()
 
 	def getScoreCard(self, x, y):
 		for rect,score in self.ds.iteritems():
-			if x > rect.x() and x < rect.x() + 50 and y > rect.y() and y < rect.y() + 50 :
+			if x > rect.x() and x < rect.x() + GAME.REGION_X and y > rect.y() and y < rect.y() + GAME.REGION_Y :
 					break;
 		return score
 		
@@ -89,15 +84,14 @@ class gameCanvas(QWidget):
 		painter.setPen(QPen(QColor(255,0,0)))
 		
 		self.ds = dict()
-		for i in xrange(20):
+		for i in xrange(GAME.POLYGONS_TO_GENERATE):
 			painter.setBrush(QColor(randint(0,255),randint(0,255),randint(0,255)))
-			xPos = randint(0,750)
-			yPos = randint(0,550)
-			#painter.drawEllipse(xPos,yPos, 50, 50)
-			rectangle = QRectF(int(xPos), int(yPos), int(50), int(50))
+			xPos = randint(0, GAME.CANVAS_WIDTH - GAME.REGION_X)
+			yPos = randint(0, GAME.CANVAS_HEIGHT - GAME.REGION_Y)
+			rectangle = QRectF(int(xPos), int(yPos), int(GAME.REGION_X), int(GAME.REGION_Y))
 			painter.drawEllipse(rectangle)
-			txPos = xPos + 15
-			tyPos = yPos + 30
+			txPos = xPos + GAME.SCORE_VALUE_POS_X
+			tyPos = yPos + GAME.SCORE_VALUE_POS_Y
 			painter.setPen(QPen(QColor(0,0,0)))
 			scoreCard = randint(0,255)
 			painter.drawText(int(txPos), int(tyPos), str(scoreCard))
