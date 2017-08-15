@@ -18,8 +18,10 @@ class gameCanvas(QWidget):
 		self.timer.timeout.connect(self.countMethod)
 		self.ds = dict()
 		self.uscore = 0
+		self.remainingSecs = 60
 		self.dialog = None
 		self.scoreDialog()
+		self.msgBox = None
 
 	def scoreDialog(self):
 		font = QFont()
@@ -30,16 +32,27 @@ class gameCanvas(QWidget):
 		self.dialog.move(1200,120)
 		self.dialog.resize(200,100)
 		self.dialog.setWindowTitle('Score')
+		self.dialog.setStyleSheet('background:green')
 		self.dialog.layout = QFormLayout()
 		self.dialog.setLayout(self.dialog.layout)
-		txt = "your score is {}".format(self.uscore)
+		txt = "score is {}".format(self.uscore)
 		self.dialog.scoreLabel = QLabel(txt)
 		self.dialog.layout.addWidget(self.dialog.scoreLabel)
+		txt = "Remaining {} seconds".format(self.remainingSecs)
+		self.dialog.rmLabel = QLabel(txt)
+		self.dialog.layout.addWidget(self.dialog.rmLabel)
 		self.dialog.show()
 
 
 	def countMethod(self):
-		self.current_count +=1
+		self.current_count += 1
+		self.remainingSecs -= 1
+		if self.remainingSecs == 0:
+			self.msgBox = QMessageBox()
+			self.msgBox.setText('GameOver')
+			self.msgBox.buttonClicked.connect(lambda:sys.exit())
+			self.msgBox.show()
+			#sys.exit()
 		if self.current_count == self.count:
 			self.timer.stop()
 			self.current_count = 0
@@ -75,6 +88,7 @@ class gameCanvas(QWidget):
 		#painter.begin(self)
 		painter.setPen(QPen(QColor(255,0,0)))
 		
+		self.ds = dict()
 		for i in xrange(20):
 			painter.setBrush(QColor(randint(0,255),randint(0,255),randint(0,255)))
 			xPos = randint(0,750)

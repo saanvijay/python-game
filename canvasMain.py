@@ -9,7 +9,7 @@ if __name__ == '__main__':
 	application = QApplication(sys.argv)
 	canvas = gameCanvas()
 	canvas.resize(800, 600)
-	canvas.setStyleSheet('background:darkGray')
+	canvas.setStyleSheet('background:black')
 	canvas.setWindowTitle('Python Game')
 	canvas.show()
 	application.exec_()
