@@ -17,7 +17,7 @@ class gameCanvas(QWidget):
 		self.timer = QTimer()
 		self.timer.start(1000)
 		self.timer.timeout.connect(self.countMethod)
-		self.ds = dict()
+		self.ds = {}
 		self.uscore = 0
 		self.remainingSecs = GAME.REMAINING_SECONDS
 		self.dialog = None
@@ -49,22 +49,29 @@ class gameCanvas(QWidget):
 		self.current_count += 1
 		self.remainingSecs -= 1
 		if self.remainingSecs == 0:
-			self.msgBox = QMessageBox()
-			self.msgBox.setText('GameOver')
-			self.msgBox.buttonClicked.connect(lambda:sys.exit())
-			self.msgBox.show()
+			self.gameOver()
 		if self.current_count == self.count:
 			self.timer.stop()
 			self.current_count = 0
-			self.ds = dict()
 			self.update()
 			self.timer.start(1000)
 		
+	def gameOver(self):
+		self.msgBox = QMessageBox()
+		self.msgBox.setText('GameOver')
+		self.msgBox.setWindowTitle('GameOver')
+		self.msgBox.setStyleSheet('background:darkCyan')
+		self.msgBox.buttonClicked.connect(lambda:sys.exit())
+		self.msgBox.show()
+
 
 	def mousePressEvent(self, QMouseEvent):
 		clickPos = QMouseEvent.pos()
 		scoreCard = self.getScoreCard(QMouseEvent.x(), QMouseEvent.y())
 		print "scoreCard", scoreCard
+		print "dict.length", len(self.ds)
+		if scoreCard == 0 :
+			self.gameOver()
 		self.uscore += scoreCard 
 		self.dialog.close()
 		self.scoreDialog()
@@ -79,11 +86,12 @@ class gameCanvas(QWidget):
 		return score
 		
 	def paintEvent(self, event):
+		del self.ds
+		self.ds = dict()
+		self.ds.clear()
 		painter = QStylePainter(self)
-		#painter.begin(self)
 		painter.setPen(QPen(QColor(255,0,0)))
 		
-		self.ds = dict()
 		for i in xrange(GAME.POLYGONS_TO_GENERATE):
 			painter.setBrush(QColor(randint(0,255),randint(0,255),randint(0,255)))
 			xPos = randint(0, GAME.CANVAS_WIDTH - GAME.REGION_X)
@@ -96,7 +104,7 @@ class gameCanvas(QWidget):
 			scoreCard = randint(0,255)
 			painter.drawText(int(txPos), int(tyPos), str(scoreCard))
 			self.ds[rectangle] = scoreCard
-		#painter.end()
+
 	def center(self):
         	screen = QDesktopWidget().screenGeometry()
         	size = self.geometry()
