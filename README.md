@@ -6,6 +6,9 @@ Simple python game development using Python PyQt, REST, MongoDB
 	* Sudo apt-get install python-qt4
 # Install mongodb(On Ubuntu)
 	* Sudo apt install mongodb
+# Install pymango(On Ubuntu)
+	* sudo apt install python-pip
+	* sudo python -m pip install pymongo
 
 # To run the game, type the following command
 	* python canvasMain.py
