@@ -20,4 +20,3 @@ Simple python game development using Python PyQt, REST, MongoDB
 # Screen shot
 ![alt text](https://github.com/saanvijay/python-game/blob/master/screen-shot-game.png)
 
-![alt text](https://github.com/saanvijay/python-game/blob/dev/mongo-database.png)
