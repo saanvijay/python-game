@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 import sys
 from random import randint
 from constants import *
+from pyMongoClient import *
 #from timerThread import timerGui
 
 class gameCanvas(QWidget):
@@ -57,6 +58,8 @@ class gameCanvas(QWidget):
 			self.timer.start(1000)
 		
 	def gameOver(self):
+		sc = scoreCollection()
+		sc.putScore(self.uscore)
 		self.msgBox = QMessageBox()
 		self.msgBox.setText('GameOver')
 		self.msgBox.setWindowTitle('GameOver')

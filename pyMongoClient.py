@@ -11,10 +11,15 @@ db = client.testdb
 
 today = str(datetime.now())
 username = getpass.getuser()
-# Insert simple data into collection
-db.highest_score.insert_one(
-	{ "date" : today,
-	  "user" : username,
-	  "score": "150"
-	}
-)
+
+class scoreCollection:
+	def putScore(self, score):
+		db.highest_score.insert_one(
+			{ "date" : today,
+	  		"user" : username,
+	  		"score": score
+			}
+		)
+	def getHighestScore(self):
+		sortlist = db.highest_score.find().sort("score", pymongo.ASCENDING)	
+		return sortlist[0]
