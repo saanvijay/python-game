@@ -12,7 +12,9 @@ Simple python game development using Python PyQt, REST, MongoDB
 # Start MongoDB (need to support REST and http interface)
 	* sudo mongod --rest --httpinterface
 # How to check the database in browser (http)
-	* http://localhost:28017
+	* http://localhost:28017/dbname/collection-name/ 
+	* http://localhost:28017/testdb/highest_score/  ('/' is important)
+	
 
 # To run the game, type the following command
 	* python canvasMain.py
