@@ -26,6 +26,8 @@ class gameCanvas(QWidget):
 		self.msgBox = None
 
 	def scoreDialog(self):
+		sc = scoreCollection()
+		hs = sc.getHighestScore()
 		font = QFont()
 		font.setFamily('Arial')
 		font.setPointSize(GAME.TEXT_FONT_SIZE)
@@ -37,6 +39,9 @@ class gameCanvas(QWidget):
 		self.dialog.setStyleSheet('background:green')
 		self.dialog.layout = QFormLayout()
 		self.dialog.setLayout(self.dialog.layout)
+		txt = "HIGHEST {}".format(hs)
+		self.dialog.highestLabel = QLabel(txt)
+		self.dialog.layout.addWidget(self.dialog.highestLabel)
 		txt = "score is {}".format(self.uscore)
 		self.dialog.scoreLabel = QLabel(txt)
 		self.dialog.layout.addWidget(self.dialog.scoreLabel)
@@ -66,13 +71,24 @@ class gameCanvas(QWidget):
 		self.msgBox.setStyleSheet('background:darkCyan')
 		self.msgBox.buttonClicked.connect(lambda:sys.exit())
 		self.msgBox.show()
+		#self.highestScore()
+
+	def highestScore(self):
+		sc = scoreCollection()
+		hs = sc.getHighestScore()
+		self.msgBox = QMessageBox()
+		self.msgBox.setText(hs)
+		self.msgBox.setWindowTitle('Highest Score')
+		self.msgBox.setStyleSheet('background:darkCyan')
+		self.msgBox.buttonClicked.connect(lambda:sys.exit())
+		self.msgBox.show()
 
 
 	def mousePressEvent(self, QMouseEvent):
 		clickPos = QMouseEvent.pos()
 		scoreCard = self.getScoreCard(QMouseEvent.x(), QMouseEvent.y())
-		print "scoreCard", scoreCard
-		print "dict.length", len(self.ds)
+		#print "scoreCard", scoreCard
+		#print "dict.length", len(self.ds)
 		if scoreCard == 0 :
 			self.gameOver()
 		self.uscore += scoreCard 

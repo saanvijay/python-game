@@ -21,5 +21,5 @@ class scoreCollection:
 			}
 		)
 	def getHighestScore(self):
-		sortlist = db.highest_score.find().sort("score", pymongo.ASCENDING)	
-		return sortlist[0]
+		sortlist = db.highest_score.find().sort("score", -1).limit(1) # Desending order, since we need highest on top	
+		return sortlist[0]['score']
